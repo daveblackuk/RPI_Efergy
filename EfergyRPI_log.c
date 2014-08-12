@@ -69,16 +69,16 @@ rtl_fm -f 433550000 -s 200000 -r 96000 -g 19.7 2>/dev/null | ./EfergyRPI_001
 //
 // Usage Examples:
 //
-//     ./rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 0
+//     rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 0
 //		This mode shows the least information which is just the best guess at the decoded frame and a KW calculation
 //		using bytes 4, 5, and 6.  The checksum is computed and displayed, but not validated.
-//      ./rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 1
+//      rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 1
 //           This  mode shows average plus and minus sample values and centering which can help with finding the best frequency. 
 //            Adjust frequency to get wave center close to  0 .  If center is too high, lower frequency, otherwise increase it.
-//      ./rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 2
+//      rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 2
 //            This mode outputs a summary with counts of consecutive positive or negative samples.  These consecutive pulse counts
 //             are what the main code uses to decode 0 and 1 data bits.  Seeing the actual pulse counts can help debug decode issues.
-//     ./rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 3
+//     rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 3
 //              This mode shows everything in modes 0..2 plus a raw dump of the sample data received from rtl_fm.
 //
 //	*Notice the "-A fast" option on  rtl_fm.  This cut Raspberry Pi cpu load from 50% to 25% and decode still worked fine.
@@ -92,14 +92,14 @@ rtl_fm -f 433550000 -s 200000 -r 96000 -g 19.7 2>/dev/null | ./EfergyRPI_001
 #include <string.h>
 
 // Standard definitions for  Efergy E2 classic decoding
-//#define MINLOWBIT 		3 	/* Min number of positive samples for a logic 0 */
-//#define MINHIGHBIT 		8	/* Min number of positive samples for a logic 1 */
-//#define VOLTAGE			240	/* Refernce Volatage */
+#define MINLOWBIT 		3 	/* Min number of positive samples for a logic 0 */
+#define MINHIGHBIT 		8	/* Min number of positive samples for a logic 1 */
+#define VOLTAGE			240	/* Refernce Volatage */
 
 // Alternate  definitions for the Efergy Elite 3.0 TPM (if used, comment out duplicates above)
-#define MINLOWBIT 		3 	/* Min number of positive samples for a logic 0 */
-#define MINHIGHBIT 		9	/* Min number of positive samples for a logic 1 */
-#define VOLTAGE			1	/* For Efergy Elite 3.0 TPM,  set to 1 */
+//#define MINLOWBIT 		3 	/* Min number of positive samples for a logic 0 */
+//#define MINHIGHBIT 		9	/* Min number of positive samples for a logic 1 */
+//#define VOLTAGE			1	/* For Efergy Elite 3.0 TPM,  set to 1 */
 
 #define E2BYTECOUNT					8	/* Efergy RF Message Byte Count */
 #define PREAMBLE_COUNT				40	/* Number of positive samples for a valid preamble */
@@ -196,12 +196,12 @@ void display_frame_data(char *msg, unsigned char bytes[], int bytecount) {
 	  printf("%02x ",bytes[i]);
 	printf("chk: %02x ",tbyte);
 	if (result < 100)
-	  printf(" KW: %4.3f\n", result);
+	  printf(" kW: %4.3f\n", result);
 	else
-	  printf(" KW: <out of range>\n");
+	  printf(" kW: <out of range>\n");
 }
 
-// Verbosity level (from 1 to 3) controls amount of debug output 
+// Verbosity level (from 0 to 3) controls amount of debug output 
 void analyze_efergy_message(int verbosity_level) {
 	int i;	
 
