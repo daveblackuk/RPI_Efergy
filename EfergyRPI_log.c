@@ -69,17 +69,17 @@ rtl_fm -f 433550000 -s 200000 -r 96000 -g 19.7 2>/dev/null | ./EfergyRPI_001
 //
 // Usage Examples:
 //
-//     rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 0
+//	rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 0
 //		This mode shows the least information which is just the best guess at the decoded frame and a KW calculation
 //		using bytes 4, 5, and 6.  The checksum is computed and displayed, but not validated.
-//      rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 1
-//           This  mode shows average plus and minus sample values and centering which can help with finding the best frequency. 
-//            Adjust frequency to get wave center close to  0 .  If center is too high, lower frequency, otherwise increase it.
-//      rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 2
-//            This mode outputs a summary with counts of consecutive positive or negative samples.  These consecutive pulse counts
-//             are what the main code uses to decode 0 and 1 data bits.  Seeing the actual pulse counts can help debug decode issues.
-//     rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 3
-//              This mode shows everything in modes 0..2 plus a raw dump of the sample data received from rtl_fm.
+//	rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 1
+//		This  mode shows average plus and minus sample values and centering which can help with finding the best frequency. 
+//		Adjust frequency to get wave center close to  0 .  If center is too high, lower frequency, otherwise increase it.
+//	rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 2
+//		This mode outputs a summary with counts of consecutive positive or negative samples.  These consecutive pulse counts
+//		are what the main code uses to decode 0 and 1 data bits.  Seeing the actual pulse counts can help debug decode issues.
+//	rtl_fm -f 433.51e6 -s 200000 -r 96000 -A fast  | ./EfergyRPI_log -a 3
+//		This mode shows everything in modes 0..2 plus a raw dump of the sample data received from rtl_fm.
 //
 //	*Notice the "-A fast" option on  rtl_fm.  This cut Raspberry Pi cpu load from 50% to 25% and decode still worked fine.
 //	Also, with an R820T USB dongle, leaving  rtl_fm gain in 'auto' mode  produced the best results.
