@@ -60,12 +60,12 @@ rtl_fm -f 433550000 -s 200000 -r 96000 -g 19.7 2>/dev/null | ./EfergyRPI_001
 // 08/12/2014 - Some debugging and sample analysis code added by github user magellannh
 //
 // Bug Fix -	Changed frame bytearray to unsigned char and added cast on  byte used in pow() function
-//		to explicitly make it signed char.  Default signed/unsigned for char is compiler dependent
-//		and this resulted in various problems.
+//	to explicitly make it signed char.  Default signed/unsigned for char is compiler dependent
+//	and this resulted in various problems.
 // 
-// New Feature  - 	Added frame analysis feature that dumps debug information to help characterize the FSK
-//			sample data received by rtl_fm.  The feature is invoked using a "-a" option followed by
-//			an optional verbosity level (0 to 3).  The output is sent to stdout. 
+// New Feature  - Added frame analysis feature that dumps debug information to help characterize the FSK
+//	sample data received by rtl_fm.  The feature is invoked using a "-a" option followed by
+//	an optional verbosity level (0 to 3).  The output is sent to stdout. 
 //
 // Usage Examples:
 //
@@ -101,15 +101,15 @@ rtl_fm -f 433550000 -s 200000 -r 96000 -g 19.7 2>/dev/null | ./EfergyRPI_001
 //#define MINHIGHBIT 		9	/* Min number of positive samples for a logic 1 */
 //#define VOLTAGE			1	/* For Efergy Elite 3.0 TPM,  set to 1 */
 
-#define E2BYTECOUNT					8	/* Efergy RF Message Byte Count */
-#define PREAMBLE_COUNT				40	/* Number of positive samples for a valid preamble */
-#define CENTERSAMP					100	/* Number of samples needed to compute for the wave center */
+#define E2BYTECOUNT		8	/* Efergy RF Message Byte Count */
+#define PREAMBLE_COUNT		40	/* Number of positive samples for a valid preamble */
+#define CENTERSAMP		100	/* Number of samples needed to compute for the wave center */
 #define FRAMEBITCOUNT	(E2BYTECOUNT*8)	/* Number of bits for the entire frame (not including preamble) */
 
-#define LOGTYPE				1	// Allows changing line-endings - 0 is for Unix /n, 1 for Windows /r/n
+#define LOGTYPE			1	// Allows changing line-endings - 0 is for Unix /n, 1 for Windows /r/n
 #define SAMPLES_TO_FLUSH	10	// Number of samples taken before writing to file.
-								// Setting this too low will cause excessive wear to flash due to updates to
-								// filesystem! You have been warned! Set to 10 samples for 6 seconds = every min.
+					// Setting this too low will cause excessive wear to flash due to updates to
+					// filesystem! You have been warned! Set to 10 samples for 6 seconds = every min.
 								
 int loggingok;		// Global var indicating logging on or off
 int samplecount;	// Global var counter for samples taken since last flush
@@ -140,10 +140,10 @@ FILE *fp;	 		// Global var file handle
 //
 #define MIN_POSITIVE_PREAMBLE_SAMPLES	40 	/* Number of positive samples in  an efergy  preamble */
 #define MIN_NEGATIVE_PREAMBLE_SAMPLES	40 	/* Number of negative samples for a valid preamble - set to 0 if not needed/used for particular device */
-#define ANALYZEBYTECOUNT				9	/* Attempt to decode up to this many bytes.  E2 Classic is 8 bytes.  Elite 3.0 TPM is 9 bytes */
-#define ANALYZEBITCOUNT	(ANALYZEBYTECOUNT*8)/* Number of bits for the entire frame (not including preamble) */
-#define SAMPLES_PER_BIT					19
-#define SAMPLE_STORE_SIZE				(ANALYZEBITCOUNT*SAMPLES_PER_BIT)	
+#define ANALYZEBYTECOUNT		9	/* Attempt to decode up to this many bytes.  E2 Classic is 8 bytes.  Elite 3.0 TPM is 9 bytes */
+#define ANALYZEBITCOUNT	(ANALYZEBYTECOUNT*8)	/* Number of bits for the entire frame (not including preamble) */
+#define SAMPLES_PER_BIT			19
+#define SAMPLE_STORE_SIZE		(ANALYZEBITCOUNT*SAMPLES_PER_BIT)	
 int sample_storage[SAMPLE_STORE_SIZE];			
 int sample_store_index;
 int sample_store_overrun;
@@ -189,8 +189,8 @@ void display_frame_data(char *msg, unsigned char bytes[], int bytecount) {
 		tbyte += bytes[i];
 	
 	// Take a shot at calculating current...
-    double current_adc = (bytes[4] * 256) + bytes[5];
-    double result  = (VOLTAGE*current_adc) / ((double) (32768) / (double) pow(2,(signed char) bytes[6]));
+	double current_adc = (bytes[4] * 256) + bytes[5];
+	double result  = (VOLTAGE*current_adc) / ((double) (32768) / (double) pow(2,(signed char) bytes[6]));
 	printf( msg);
 	for(i=0;i<bytecount;i++) 
 	  printf("%02x ",bytes[i]);
@@ -232,7 +232,6 @@ void analyze_efergy_message(int verbosity_level) {
 	struct tm *curtime = localtime( &ltime );
 	strftime(buffer,80,"%x,%X", curtime); 
 	if (verbosity_level > 0) {
-
 		printf("\nAnalysis of rtl_fm sample data for frame received on %s\n", buffer);
 		printf("     Number of Samples: %6d\n", sample_store_index);
 		printf("    Avg. Sample Values: %6.0f (negative)   %6.0f (positive)\n", avg_neg, avg_pos);
@@ -431,16 +430,16 @@ int dbit;
 
 long center;
 
-    if ((argc==2) && (strncmp(argv[1], "-h", 2)==0)) {
-		printf("\nUsage: %s              - Normal mode\n",argv[0]);
-		printf("       %s <filename>   - Normal mode plus log samples to output file\n", argv[0]);
-		printf("       %s -a [0,1,2,3] - Run in debug/analysis mode.  Verbosity level (0-3) is optional\n",argv[0]);
-		exit(0);
-    } else if ((argc==3) && (strncmp(argv[1], "-a", 2)==0)) {
-		long verbosity_level = strtol(argv[2], NULL, 0);
-		run_in_analysis_mode(verbosity_level);
+	if ((argc==2) && (strncmp(argv[1], "-h", 2)==0)) {
+	  printf("\nUsage: %s              - Normal mode\n",argv[0]);
+	  printf("       %s <filename>   - Normal mode plus log samples to output file\n", argv[0]);
+	  printf("       %s -a [0,1,2,3] - Run in debug/analysis mode.  Verbosity level (0-3) is optional\n",argv[0]);
+	  exit(0);
+	} else if ((argc==3) && (strncmp(argv[1], "-a", 2)==0)) {
+	  long verbosity_level = strtol(argv[2], NULL, 0);
+	  run_in_analysis_mode(verbosity_level);
 	} else if ((argc==2) && (strcmp(argv[1], "-a")==0))
-		run_in_analysis_mode(2);
+	  run_in_analysis_mode(2);
 	else if (argc==2) {
 	  fp = fopen(argv[1], "a"); // Log file opened in append mode to avoid destroying data
 	  samplecount=0; // Reset sample counter
