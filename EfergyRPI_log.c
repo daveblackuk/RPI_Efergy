@@ -190,12 +190,12 @@ void display_frame_data(char *msg, unsigned char bytes[], int bytecount) {
 	
 	// Take a shot at calculating current...
 	double current_adc = (bytes[4] * 256) + bytes[5];
-	double result  = (VOLTAGE*current_adc) / ((double) (32768) / (double) pow(2,(signed char) bytes[6]));
+	double result  = (VOLTAGE * current_adc) / ((double) 32768 / (double) pow(2,bytes[6]));
 	printf( msg);
 	for(i=0;i<bytecount;i++) 
 	  printf("%02x ",bytes[i]);
 	printf("chk: %02x ",tbyte);
-	if (result < 100)
+	if (result>0 && result<5000)
 	  printf(" kW: %4.3f\n", result);
 	else
 	  printf(" kW: <out of range>\n");
